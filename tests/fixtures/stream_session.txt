@@ -1,0 +1,49 @@
+==> Auto-updating Homebrew...
+Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
+==> Updated 2 taps (homebrew/core and homebrew/cask).
+==> New Formulae
+foo  bar
+user/tap/baz
+Updated Homebrew from 7.0.10 to 7.0.11.
+==> Downloading bottle manifests
+✔︎ Bottle Manifest wget (1.25.0)
+==> Fetching downloads for: wget, libidn2
+==> Fetching dependencies for wget: libidn2
+==> Downloading https://ghcr.io/v2/homebrew/core/wget/manifests/1.25.0
+✔︎ Bottle libidn2 (2.3.8)
+✔︎ Bottle wget (1.25.0)
+Already downloaded: /Users/x/Library/Caches/Homebrew/downloads/4239--figlet--2.2.5.arm64_tahoe.bottle.tar.gz
+Already downloaded: /Users/x/Library/Caches/Homebrew/downloads/8e13--figlet-2.2.5.bottle_manifest.json
+==> Installing dependencies for wget: libidn2
+==> Installing wget dependency: libidn2
+==> Pouring libidn2--2.3.8.arm64_tahoe.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libidn2/2.3.8: 281 files, 1.6MB
+==> Installing wget
+==> Pouring wget--1.25.0.arm64_tahoe.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/wget/1.25.0: 92 files, 4.5MB
+==> Caveats
+wget caveat line one
+  indented caveat line two
+==> Summary
+==> Running `brew cleanup wget`...
+Disable this behaviour by setting `HOMEBREW_NO_INSTALL_CLEANUP=1`.
+Hide these hints with `HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+Removing: /opt/homebrew/Cellar/wget/1.24.5... (92 files, 4.5MB)
+Removing: /Users/x/Library/Caches/Homebrew/wget--1.24.5.tar.gz... (1.2MB)
+Pruned 3 symbolic links from /opt/homebrew
+==> Installing Cask example-app
+==> Running installer for example-app with sudo; the password may be necessary.
+🍺  example-app was successfully installed!
+Uninstalling /opt/homebrew/Cellar/figlet/2.2.5... (678 files, 10MB)
+==> Autoremoving 2 unneeded formulae:
+libexample@3
+libsample
+Uninstalling /opt/homebrew/Cellar/libsample/7.1.1... (14 files, 12.5MB)
+Uninstalling /opt/homebrew/Cellar/libexample@3/3.5.9... (7,596 files, 37.3MB)
+==> Uninstalling Cask example-tool
+example-tool was successfully uninstalled!
+Tapped 1 command (40 files, 1MB).
+Warning: Some warning from brew
+Error: Some error from brew
+A line mac-get has no rule for
+Already up-to-date.

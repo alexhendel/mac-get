@@ -1,0 +1,40 @@
+    Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
+  ✓ Updated 2 taps                                                 homebrew/core and homebrew/cask
+
+  ╭─ New Formulae ────────────────────────────────────────────────────────────────────────────────
+  │  foo, bar, user/tap/baz
+  ╰───────────────────────────────────────────────────────────────────────────────────────────────
+
+  ✓ Homebrew updated                                                              7.0.10 to 7.0.11
+  ✓ Downloaded libidn2 2.3.8
+  ✓ Downloaded wget 1.25.0
+    cached  figlet 2.2.5
+  ✓ Installed libidn2 2.3.8                                               281 files · 1.6MB · X.Xs
+  ✓ Installed wget 1.25.0                                                  92 files · 4.5MB · X.Xs
+
+  ╭─ Caveats · wget ──────────────────────────────────────────────────────────────────────────────
+  │  wget caveat line one
+  │    indented caveat line two
+  ╰───────────────────────────────────────────────────────────────────────────────────────────────
+
+  ✓ Pruned 3 symbolic links from /opt/homebrew
+  🔑 Running installer for example-app with sudo; the password may be necessary.
+  ✓ Installed example-app                                                                     X.Xs
+  ✓ Removed figlet 2.2.5                                                          678 files · 10MB
+
+  ╭─ Autoremoving 2 unneeded formulae ────────────────────────────────────────────────────────────
+  │  libexample@3, libsample
+  ╰───────────────────────────────────────────────────────────────────────────────────────────────
+
+  ✓ Removed libsample 7.1.1                                                      14 files · 12.5MB
+  ✓ Removed libexample@3 3.5.9                                                7,596 files · 37.3MB
+  ✓ Removed example-tool
+  ✓ Tapped 1 command (40 files, 1MB)
+  ▲ Warning Some warning from brew
+  ✗ Error Some error from brew
+    A line mac-get has no rule for
+  ✓ Homebrew is up to date
+  ✓ Cleaned up 2 old files                                                             5.7MB freed
+
+  ● Done in X.Xs   3 installed · 4 removed · 1 warning
+

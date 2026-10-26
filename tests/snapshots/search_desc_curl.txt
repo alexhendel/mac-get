@@ -1,0 +1,22 @@
+  Formulae 13
+    awscurl               Curl like simplicity to access AWS resources
+    curlcpp               Object oriented C++ wrapper for CURL (libcurl)
+    curlftpfs deprecated  Filesystem for accessing FTP hosts based on FUSE and libcurl
+    curlie                Power of curl, ease of use of httpie
+    curlpp                C++ wrapper for libcURL
+    doh                   Stand-alone DNS-over-HTTPS resolver using libcurl
+    gdown                 Google Drive Public File Downloader when Curl/Wget Fails
+    graphqurl             Curl for GraphQL with autocomplete, subscriptions and GraphiQL
+    grpcurl               Like cURL, but for gRPC
+    h2c                   Headers 2 curl
+    httpie                User-friendly cURL replacement (command-line HTTP client)
+    httpstat              Curl statistics made simple
+    hurl                  Run and Test HTTP Requests with plain text and curl
+
+  Casks 3
+    font-iosevka-curly       (Iosevka Curly) [no description]
+    font-iosevka-curly-slab  (Iosevka Curly Slab) [no description]
+    localcan                 (LocalCan) Develop apps with Public URLs and .local domains
+
+  ● 16 results   ✓ installed   ·   mac-get info <name> for details
+

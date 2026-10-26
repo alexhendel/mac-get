@@ -1,0 +1,7 @@
+==> Formulae
+awscurl                    curlftpfs (deprecated)     flickcurl
+curl ✔                     curlie                     grpcurl
+curlcpp                    curlpp                     carl
+
+==> Casks
+cursr                      font-iosevka-curly         font-iosevka-curly-slab

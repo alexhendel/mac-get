@@ -1,0 +1,76 @@
+{
+  "formulae": [
+    {
+      "name": "wget",
+      "full_name": "wget",
+      "desc": "Internet file retriever",
+      "versions": {"stable": "1.25.0", "head": "HEAD", "bottle": true},
+      "outdated": false,
+      "pinned": true,
+      "keg_only": false,
+      "deprecated": false,
+      "disabled": false,
+      "installed": [{"version": "1.25.0", "installed_on_request": true}]
+    },
+    {
+      "name": "curl",
+      "full_name": "curl",
+      "desc": "Get a file from an HTTP, HTTPS or FTP server",
+      "versions": {"stable": "8.24.0", "head": "HEAD", "bottle": true},
+      "outdated": true,
+      "pinned": false,
+      "keg_only": true,
+      "deprecated": false,
+      "disabled": false,
+      "installed": [{"version": "8.23.0", "installed_on_request": true}]
+    },
+    {
+      "name": "libexample",
+      "full_name": "libexample",
+      "desc": "Made-up dependency for tests",
+      "versions": {"stable": "2.3.8", "head": null, "bottle": true},
+      "outdated": false,
+      "pinned": false,
+      "keg_only": false,
+      "deprecated": false,
+      "disabled": false,
+      "installed": [{"version": "2.3.8", "installed_on_request": false}]
+    },
+    {
+      "name": "libsample@3",
+      "full_name": "libsample@3",
+      "desc": "Made-up outdated dependency for tests",
+      "versions": {"stable": "3.6.0", "head": null, "bottle": true},
+      "outdated": true,
+      "pinned": false,
+      "keg_only": true,
+      "deprecated": false,
+      "disabled": false,
+      "installed": [{"version": "3.5.9", "installed_on_request": false}]
+    }
+  ],
+  "casks": [
+    {
+      "token": "example-tool",
+      "name": ["example-tool"],
+      "desc": "Made-up cask whose display name equals its token",
+      "version": "0.49.2",
+      "installed": "0.49.2",
+      "outdated": false,
+      "auto_updates": null,
+      "deprecated": false,
+      "disabled": false
+    },
+    {
+      "token": "example-app",
+      "name": ["Example App"],
+      "desc": "Made-up outdated cask",
+      "version": "158.0.1",
+      "installed": "150.0",
+      "outdated": true,
+      "auto_updates": true,
+      "deprecated": false,
+      "disabled": false
+    }
+  ]
+}

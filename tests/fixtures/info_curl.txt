@@ -1,0 +1,31 @@
+==> curl ✔: stable 8.23.0 (bottled), HEAD [keg-only]
+Get a file from an HTTP, HTTPS or FTP server
+https://curl.se
+Old Names: wcurl
+Installed (on request)
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/c/curl.rb
+License: curl
+==> Installed Versions
+curl ✔ 8.23.0 (558 files, 5MB)
+==> Dependencies
+Required (8): brotli ✔, libnghttp2 ✔, libnghttp3 ✔, libngtcp2 ✔, libpsl ✔, libssh2 ✔, openssl@4 ✔, zstd ✔
+Recursive Runtime (11): all installed ✔
+==> Options
+--HEAD
+	Install HEAD version
+==> Caveats
+curl is keg-only, which means it was not symlinked into /opt/homebrew,
+because macOS already provides this software and installing another version in
+parallel can cause all kinds of trouble.
+
+If you need to have curl first in your PATH, run:
+  printf '%s\n' export\ PATH\=/opt/homebrew/opt/curl/bin:\$PATH >> ~/.zshrc
+
+For compilers to find curl you may need to set:
+  export LDFLAGS=-L/opt/homebrew/opt/curl/lib
+  export CPPFLAGS=-I/opt/homebrew/opt/curl/include
+==> Downloading https://formulae.brew.sh/api/formula/curl.json
+==> Analytics
+install: 84,204 (30 days), 158,932 (90 days), 770,214 (365 days)
+install-on-request: 32,267 (30 days), 57,900 (90 days), 324,974 (365 days)
+build-error: 141 (30 days)

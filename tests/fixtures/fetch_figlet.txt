@@ -1,0 +1,3 @@
+==> Fetching figlet from homebrew/core
+✔︎ Bottle Manifest figlet (2.2.5)
+✔︎ Bottle figlet (2.2.5)

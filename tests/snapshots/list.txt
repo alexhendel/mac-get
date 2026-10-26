@@ -1,0 +1,15 @@
+  Formulae 4   2 installed by you · 2 dependencies
+
+    ↑ curl  8.23.0 → 8.24.0  Get a file from an HTTP, HTTPS or FTP server  keg-only
+    ✓ wget  1.25.0           Internet file retriever  pinned
+
+    Dependencies
+    · libexample 2.3.8    ↑ libsample@3 3.5.9
+
+  Casks 2
+
+    ↑ example-app   150.0 → 158.0.1  Example App · Made-up outdated cask  auto-updates
+    ✓ example-tool  0.49.2           Made-up cask whose display name equals its token
+
+  ● 6 packages   ↑ 3 outdated · mac-get upgrade
+

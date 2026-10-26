@@ -1,0 +1,15 @@
+==> firefox (Mozilla Firefox): 158.0.1 (auto_updates)
+Web browser
+https://www.mozilla.org/firefox/
+Not installed
+From: https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/f/firefox.rb
+==> Requirements
+Required: macOS ✔
+==> Languages
+ach, af, an, ar, ast, az, be, bg, bn, br, bs, ca, cak, cs, cy, da, de, dsb, el, en-CA, en-GB, en, eo, es-AR, es-CL, es-ES, es-MX, et, eu, fa, ff, fi, fr, fur, fy, ga, gd, gl, gn, gu, he, hi, hr, hsb, hu, hy, ia, id, in, is, it, ja, ka, kab, kk, km, kn, ko, lij, lt, lv, mk, mr, ms, my, nb, ne, nl, nn, oc, pa-IN, pl, pt-BR, pt, rm, ro, ru, sat, sc, sco, si, sk, skr, sl, son, sq, sr, sv, szl, ta, te, tg, th, tl, tr, trs, uk, ur, uz, vi, xh, zh-TW, zh
+==> Artifacts
+Firefox.app (App)
+.homebrew-command-wrappers/firefox -> firefox (Command Wrapper)
+==> Downloading https://formulae.brew.sh/api/cask/firefox.json
+==> Analytics
+install: 13,641 (30 days), 34,473 (90 days), 184,451 (365 days)

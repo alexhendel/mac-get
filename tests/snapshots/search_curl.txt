@@ -1,0 +1,10 @@
+  Formulae 9
+      awscurl                ✓ curl                     curlcpp
+      curlftpfs deprecated     curlie                   curlpp
+      flickcurl                grpcurl                  carl
+
+  Casks 3
+      cursr                       font-iosevka-curly          font-iosevka-curly-slab
+
+  ● 12 results   ✓ installed   ·   mac-get info <name> for details
+

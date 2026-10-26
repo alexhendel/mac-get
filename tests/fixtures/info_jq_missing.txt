@@ -1,0 +1,20 @@
+==> jq: stable 1.8.2 (bottled), HEAD
+Lightweight and flexible command-line JSON processor
+https://jqlang.github.io/jq/
+Not installed
+Bottle Size: 439.9KB
+Installed Size: 1.2MB
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/j/jq.rb
+License: MIT
+==> Dependencies
+Required (1): oniguruma
+==> Options
+--HEAD
+	Install HEAD version
+==> Downloading https://formulae.brew.sh/api/formula/jq.json
+==> Analytics
+install: 64,858 (30 days), 186,124 (90 days), 816,886 (365 days)
+install-on-request: 59,980 (30 days), 179,412 (90 days), 801,746 (365 days)
+build-error: 4 (30 days)
+
+Error: No available formula with the name "definitely-not-a-pkg-xyz".
