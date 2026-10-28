@@ -9,8 +9,10 @@ from .style import ANSI_RE
 
 BREW = shutil.which("brew") or "/opt/homebrew/bin/brew"
 
-# Flags that mean the output is for machines or for reading help: never restyle.
-PASSTHROUGH_FLAGS = {"-h", "--help", "--json", "-n", "--dry-run-json"}
+# Flags that mean the output is for machines or for reading help, or that brew
+# will hand the terminal to the user (a build shell, debug prompts): never restyle.
+PASSTHROUGH_FLAGS = {"-h", "--help", "--json", "-n", "--dry-run-json",
+                     "-i", "--interactive", "-d", "--debug"}
 
 
 def brew_env(color=False):
