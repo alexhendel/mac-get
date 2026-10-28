@@ -11,7 +11,8 @@ NOT_FOUND = ("No formulae or casks found", "No formulae found", "No casks found"
 
 
 def handles(args):
-    return args[:1] == ["search"] and len(args) > 1 and not set(args) & PASSTHROUGH_FLAGS
+    return (args[:1] == ["search"] and any(not a.startswith("-") for a in args[1:])
+            and not set(args) & PASSTHROUGH_FLAGS)
 
 
 def run(args):
