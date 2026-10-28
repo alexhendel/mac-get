@@ -14,6 +14,7 @@ A rule module may define:
 import os
 import re
 import select
+import signal
 import subprocess
 import time
 
@@ -156,6 +157,9 @@ def run(args):
     op.hide_cursor()
     buf = b""
     last_data = time.monotonic()
+    # The terminal sends Ctrl-C to brew (same process group): keep rendering until it
+    # exits. A no-op handler, not SIG_IGN, because brew would inherit SIG_IGN.
+    old_sigint = signal.signal(signal.SIGINT, lambda *_: None)
     try:
         while True:
             ready, _, _ = select.select([fd], [], [], 0.08)
@@ -180,15 +184,8 @@ def run(args):
         if buf:
             op.handle(buf.decode("utf-8", "replace"))
         code = proc.wait()
-    except KeyboardInterrupt:
-        # brew is in our process group, so the terminal already sent it SIGINT;
-        # sending another could abort its cleanup. Just give it time to finish.
-        try:
-            proc.wait(timeout=5)
-        except Exception:
-            proc.kill()
-        code = 130
     finally:
+        signal.signal(signal.SIGINT, old_sigint)
         proc.stdout.close()
         op.show_cursor()
     op.footer(code)

@@ -167,23 +167,48 @@ class ProcessLoop(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn("Proceed? [y/N] ", out)
 
-    def test_ctrl_c_reaches_brew_once(self):
-        # Regression (#1): brew shares our process group, so the terminal already
-        # interrupts it; a second SIGINT from us could abort brew's own cleanup.
+    def ctrl_c(self, presses, exit_code=130):
+        """Run mac-get in its own session against fake brew and press Ctrl-C.
+
+        Returns (mac-get's exit code, its stdout, its stderr, SIGINTs brew saw)."""
         with tempfile.TemporaryDirectory() as tmp:
             siglog = os.path.join(tmp, "sigint.log")
             env = dict(os.environ, FAKE_BREW_OUTPUT=os.path.join(FIXTURES, "fetch_figlet.txt"),
-                       FAKE_BREW_SIGLOG=siglog)
+                       FAKE_BREW_SIGLOG=siglog, FAKE_BREW_EXIT=str(exit_code))
             code = ("import sys; from macget import stream; stream.BREW = sys.argv[1]; "
                     "sys.exit(stream.run(['install', 'figlet']))")
             proc = subprocess.Popen([sys.executable, "-c", code, FAKE_BREW], env=env,
                                     cwd=os.path.dirname(os.path.dirname(FAKE_BREW)),
-                                    stdout=subprocess.DEVNULL, start_new_session=True)
-            time.sleep(1)  # let mac-get start brew and render its output
-            os.killpg(proc.pid, signal.SIGINT)  # what the terminal does on Ctrl-C
-            self.assertEqual(proc.wait(timeout=10), 130)
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                    text=True, start_new_session=True)
+            deadline = time.monotonic() + 10
+            while not os.path.exists(siglog + ".ready") and time.monotonic() < deadline:
+                time.sleep(0.02)
+            for _ in range(presses):
+                os.killpg(proc.pid, signal.SIGINT)  # what the terminal does on Ctrl-C
+                time.sleep(0.1)
+            out, err = proc.communicate(timeout=10)
             with open(siglog) as f:
-                self.assertEqual(f.read().count("SIGINT"), 1)
+                return proc.returncode, out, err, f.read().count("SIGINT")
+
+    def test_ctrl_c_reaches_brew_once(self):
+        # Regression (#1): brew shares our process group, so the terminal already
+        # interrupts it; a second SIGINT from us could abort brew's own cleanup.
+        code, _, _, sigints = self.ctrl_c(1)
+        self.assertEqual((code, sigints), (130, 1))
+
+    def test_ctrl_c_keeps_brews_exit_code_and_output(self):
+        # Regression (#12): the exit code was always 130 and brew's last lines were lost.
+        code, out, _, _ = self.ctrl_c(1, exit_code=1)
+        self.assertEqual(code, 1)
+        self.assertIn("Cleaned up after interrupt", out)
+
+    def test_repeated_ctrl_c_does_not_crash(self):
+        # Regression (#12): a second Ctrl-C raised out of proc.wait() with a traceback.
+        code, out, err, sigints = self.ctrl_c(2)
+        self.assertEqual((code, sigints), (130, 2))
+        self.assertNotIn("Traceback", err)
+        self.assertIn("Cancelled", out)
 
 
 if __name__ == "__main__":
