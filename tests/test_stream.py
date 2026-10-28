@@ -60,6 +60,15 @@ class Session(SnapshotMixin, unittest.TestCase):
         self.assertIn("A line mac-get has no rule for", self.out)
         self.assertIn("Adjust how often this is run", self.out)
 
+    def test_long_unrecognised_lines_wrap(self):
+        # Regression (#3): long notes were truncated, losing their end.
+        long = ("Logs: /Users/x/Library/Logs/Homebrew/example-formula/01.configure "
+                "/Users/x/Library/Logs/Homebrew/example-formula/02.make (see the end)")
+        _, out = feed([long])
+        self.assertNotIn("…", out)
+        self.assertEqual(" ".join(out.split()).count(long), 1)
+        self.assertTrue(all(len(l) <= 100 for l in out.splitlines()))
+
     def test_noise_is_hidden(self):
         for noise in ("Bottle Manifest", "HOMEBREW_NO_INSTALL_CLEANUP", "HOMEBREW_NO_ENV_HINTS",
                       "bottle_manifest.json"):
