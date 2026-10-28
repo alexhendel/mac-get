@@ -14,7 +14,6 @@ A rule module may define:
 import os
 import re
 import select
-import signal
 import subprocess
 import time
 
@@ -182,8 +181,9 @@ def run(args):
             op.handle(buf.decode("utf-8", "replace"))
         code = proc.wait()
     except KeyboardInterrupt:
+        # brew is in our process group, so the terminal already sent it SIGINT;
+        # sending another could abort its cleanup. Just give it time to finish.
         try:
-            proc.send_signal(signal.SIGINT)
             proc.wait(timeout=5)
         except Exception:
             proc.kill()
