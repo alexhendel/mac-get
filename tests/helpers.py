@@ -9,6 +9,7 @@ from macget.style import ANSI_RE
 HERE = os.path.dirname(os.path.realpath(__file__))
 FIXTURES = os.path.join(HERE, "fixtures")
 SNAPSHOTS = os.path.join(HERE, "snapshots")
+FAKE_BREW = os.path.join(HERE, "fake_brew.py")
 
 
 def fixture(name):
