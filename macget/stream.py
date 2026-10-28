@@ -118,9 +118,13 @@ class Operation(UI):
 
     def handle_heading(self, h):
         if h.startswith("Caveats"):
-            title = self.stage_pkg()
-            self.open_section("caveats", title, lambda op, t, lines: op.box(
-                f"Caveats · {t}" if t else "Caveats", lines, yellow))
+            self.open_section("caveats", self.stage_pkg(), caveats_box)
+            return
+        if NAMES_LINE.match(h) and (self.section == "package-caveats" or (
+                self.section == "caveats" and not any(l.strip() for l in self.buffer))):
+            # With 2+ packages brew repeats all caveats at the end: a bare
+            # `==> Caveats`, then one `==> <name>` heading per package.
+            self.open_section("package-caveats", h, caveats_box)
             return
         if h.startswith(("Summary", "Downloading bottle manifests")):
             self.close_section()
@@ -145,6 +149,10 @@ class Operation(UI):
             if hasattr(r, "summary"):
                 r.summary(self, bits)
         super().footer(code, bits)
+
+
+def caveats_box(op, title, lines):
+    op.box(f"Caveats · {title}" if title else "Caveats", lines, yellow)
 
 
 def run(args):
