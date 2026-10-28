@@ -76,6 +76,7 @@ codes are identical. That includes:
 
 - every other command (`outdated`, `deps`, `doctor`, `services`, …)
 - `--help`, `--json` and other machine-readable flags
+- `--interactive`/`-i` and `--debug`/`-d`, where brew hands you a shell or asks questions
 - `search` without a search term
 - `info` without package names, or with flags other than `--formula`/`--cask`
 - `list` with package names (lists their files) or any other flag (`-1`, `--versions`, `--pinned`, …)
