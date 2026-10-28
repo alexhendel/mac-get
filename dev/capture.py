@@ -8,12 +8,12 @@ mac-get without an interactive terminal (e.g. from an agent or CI).
 """
 import os
 import pty
-import re
 import subprocess
 import sys
 
-ANSI_RE = re.compile(r"\x1b\[[0-9;?]*[A-Za-z]|\x1b\][^\x07]*\x07")
-SPINNER = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+from macget.style import ANSI_RE, SPINNER  # noqa: E402
 
 
 def capture(cmd):
