@@ -5,8 +5,9 @@ Prints $FAKE_BREW_OUTPUT (a fixture path) line by line, optionally ends with
 $FAKE_BREW_PARTIAL (text without a newline, like an interactive prompt) and
 exits with $FAKE_BREW_EXIT.
 
-With $FAKE_BREW_SIGLOG set it instead waits to be interrupted, appends one
-line to that file per SIGINT received and exits 130, like brew on Ctrl-C.
+With $FAKE_BREW_SIGLOG set it instead touches $FAKE_BREW_SIGLOG.ready, waits
+to be interrupted, appends one line to that file per SIGINT received, prints
+a cleanup message and exits with $FAKE_BREW_EXIT (default 130), like brew on Ctrl-C.
 """
 import os
 import signal
@@ -26,11 +27,13 @@ with open(os.environ["FAKE_BREW_OUTPUT"]) as f:
 sys.stdout.flush()
 
 if siglog:
+    open(siglog + ".ready", "w").close()
     deadline = time.monotonic() + 5
     while not os.path.exists(siglog) and time.monotonic() < deadline:
         time.sleep(0.02)
-    time.sleep(0.5)  # brew's cleanup: a second SIGINT would land here
-    sys.exit(130)
+    time.sleep(0.5)  # brew's cleanup: a second Ctrl-C would land here
+    print("Cleaned up after interrupt", flush=True)
+    sys.exit(int(os.environ.get("FAKE_BREW_EXIT", "130")))
 
 partial = os.environ.get("FAKE_BREW_PARTIAL")
 if partial:
