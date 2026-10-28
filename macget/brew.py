@@ -1,6 +1,5 @@
 """Running brew: pass-through exec, pty capture and JSON capture (with spinner)."""
 import os
-import select
 import shutil
 import subprocess
 import threading
@@ -41,44 +40,47 @@ def capture_on_pty(ui, args, stage):
                             stderr=slave, env=brew_env(color=True))
     os.close(slave)
 
-    ui.header()
-    ui.set_stage(stage)
-    ui.hide_cursor()
-    raw = b""
-    try:
+    def read():
+        raw = b""
         while True:
-            ready, _, _ = select.select([master], [], [], 0.08)
-            if ready:
-                try:
-                    chunk = os.read(master, 65536)
-                except OSError:  # EIO: brew closed the pty
-                    break
-                if not chunk:
-                    break
-                raw += chunk
-            ui.draw_spinner()
-        code = proc.wait()
-    except KeyboardInterrupt:
-        proc.kill()
-        code = None
+            try:
+                chunk = os.read(master, 65536)
+            except OSError:  # EIO: brew closed the pty
+                return raw
+            if not chunk:
+                return raw
+            raw += chunk
+
+    try:
+        raw = spin(ui, stage, proc, read)
     finally:
         os.close(master)
-        ui.show_cursor()
-    ui.clear_spinner()
-    text = ANSI_RE.sub("", raw.decode("utf-8", "replace")).replace("\r", "")
-    return code, text
+    if raw is None:
+        return None, ""
+    return proc.wait(), ANSI_RE.sub("", raw.decode("utf-8", "replace")).replace("\r", "")
 
 
 def capture_output(ui, args, stage):
     """Run brew on pipes with a spinner; return (exit code, stdout, stderr).
 
-    Output may exceed a pipe buffer, so it is drained on a thread while the
-    spinner runs (polling alone would deadlock). Code is None if cancelled.
+    Code is None if cancelled.
     """
     proc = subprocess.Popen([BREW, *args], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             env=brew_env(), text=True)
-    result = {}
-    reader = threading.Thread(target=lambda: result.update(io=proc.communicate()), daemon=True)
+    io = spin(ui, stage, proc, proc.communicate)
+    if io is None:
+        return None, "", ""
+    return (proc.returncode, *io)
+
+
+def spin(ui, stage, proc, read):
+    """Show the spinner while read() collects brew's output; return its result.
+
+    read() runs on a thread because output may exceed a pipe buffer, and polling
+    alone would deadlock. Returns None if the user cancelled (brew is killed).
+    """
+    result = []
+    reader = threading.Thread(target=lambda: result.append(read()), daemon=True)
     reader.start()
     ui.header()
     ui.set_stage(stage)
@@ -89,9 +91,8 @@ def capture_output(ui, args, stage):
             reader.join(0.08)
     except KeyboardInterrupt:
         proc.kill()
-        return None, "", ""
+        return None
     finally:
         ui.show_cursor()
     ui.clear_spinner()
-    out, err = result["io"]
-    return proc.returncode, out, err
+    return result[0]

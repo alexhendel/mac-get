@@ -10,8 +10,8 @@ def sgr(code):
     return (lambda s: f"\033[{code}m{s}\033[0m") if USE_COLOR else (lambda s: s)
 
 
-bold, dim, italic = sgr("1"), sgr("2"), sgr("3")
-red, green, yellow, blue, magenta, cyan = (sgr(f"9{i}") for i in range(1, 7))
+bold, italic = sgr("1"), sgr("3")
+red, green, yellow, cyan = (sgr(f"9{i}") for i in (1, 2, 3, 6))
 accent = sgr("38;5;141")  # soft violet
 muted = sgr("38;5;244")
 

@@ -114,4 +114,4 @@ Gotchas:
 - `pty.spawn` with stdin at EOF hangs on Python 3.9; use the `openpty` +
   `Popen` pattern from `dev/capture.py` instead.
 - Polling a process whose output exceeds the pipe buffer deadlocks; read it on
-  a thread (see `brew.capture_output`).
+  a thread (see `brew.spin`, shared by both capture functions).

@@ -40,7 +40,7 @@ class BrewContract(unittest.TestCase):
     def test_search_columns(self):
         code, text = on_pty("search", "curl")
         self.assertEqual(code, 0)
-        sections, errors = search.parse(QuietUI(), text)
+        sections, errors, _ = search.parse(text)
         self.assertIn("Formulae", [t for t, _ in sections])
         names = [e[0] for _, entries in sections for e in entries]
         self.assertIn("curl", names)
@@ -51,7 +51,7 @@ class BrewContract(unittest.TestCase):
 
     def test_search_desc(self):
         _, text = on_pty("search", "--desc", "curl")
-        sections, _ = search.parse(QuietUI(), text)
+        sections, _, _ = search.parse(text)
         entries = [e for _, es in sections for e in es]
         self.assertTrue(entries)
         self.assertTrue(all(e[3] is not None for e in entries), "every entry has a description")
