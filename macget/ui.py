@@ -88,8 +88,9 @@ class UI:
         self.step(green("✓"), title, detail)
 
     def note(self, text):
-        width = term_width() - len(PAD) - 4
-        self.println(f"{PAD}  {muted(truncate(text, width))}")
+        # Wrapped, never truncated: an unrecognised line may be the one that matters.
+        for chunk in wrap(text, term_width() - len(PAD) - 4):
+            self.println(f"{PAD}  {muted(chunk)}")
 
     def warn(self, text):
         self.warnings += 1
