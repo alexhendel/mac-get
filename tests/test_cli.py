@@ -76,6 +76,8 @@ class Routing(unittest.TestCase):
             # interactive: brew opens a shell or asks questions (#4)
             ["install", "--interactive", "wget"], ["install", "-i", "wget"],
             ["upgrade", "--debug", "wget"], ["reinstall", "-d", "wget"],
+            # no search term: brew prints its usage (#14)
+            ["search", "--desc"], ["search", "--cask"],
         ]
         for args in cases:
             with self.subTest(args=args):
