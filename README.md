@@ -62,7 +62,7 @@ mac-get uninstall wget
 `mac-get --version` (or `-v`) shows mac-get's version above brew's:
 
 ```
-mac-get 0.1.0
+mac-get 1.0.0
 Homebrew 7.0.11
 ```
 
