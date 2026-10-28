@@ -33,7 +33,9 @@ def run(args):
                 return text[:i] + accent(bold(text[i:i + len(t)])) + text[i + len(t):]
         return text
 
-    sections, errors = parse(ui, text)
+    sections, errors, warnings = parse(text)
+    for w in warnings:
+        ui.warn(w)
 
     width = term_width()
     total = 0
@@ -74,9 +76,9 @@ def run(args):
     return code
 
 
-def parse(ui, text):
-    """Return ([(section title, [(name, mark, status, desc)])], errors)."""
-    sections, current, errors = [], None, []
+def parse(text):
+    """Return ([(section title, [(name, mark, status, desc)])], errors, warnings)."""
+    sections, current, errors, warnings = [], None, [], []
     for ln in text.splitlines():
         ln = ln.strip()
         if ln.startswith("==> "):
@@ -85,7 +87,7 @@ def parse(ui, text):
         elif ln.startswith("Error:"):
             errors.append(ln[6:].strip())
         elif ln.startswith("Warning:"):
-            ui.warn(ln[8:].strip())
+            warnings.append(ln[8:].strip())
         elif ln:
             if current is None:  # e.g. --formula without a header
                 current = ("Results", [])
@@ -95,7 +97,7 @@ def parse(ui, text):
                 m = ENTRY.match(part.strip())
                 if m:
                     current[1].append(m.groups())
-    return sections, errors
+    return sections, errors, warnings
 
 
 def tag(status):

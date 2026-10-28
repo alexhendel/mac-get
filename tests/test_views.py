@@ -23,7 +23,7 @@ def render_view(view, args, text, patch="capture_on_pty", code=0):
 
 class Search(SnapshotMixin, unittest.TestCase):
     def test_parse_sections_marks_and_tags(self):
-        sections, errors = search.parse(QuietUI(), fixture("search_curl.txt"))
+        sections, errors, _ = search.parse(fixture("search_curl.txt"))
         titles = [t for t, _ in sections]
         self.assertEqual(titles[0], "Formulae")
         entries = {e[0]: e for e in sections[0][1]}
@@ -33,7 +33,7 @@ class Search(SnapshotMixin, unittest.TestCase):
         self.assertEqual(errors, [])
 
     def test_parse_desc(self):
-        sections, _ = search.parse(QuietUI(), fixture("search_desc_curl.txt"))
+        sections, _, _ = search.parse(fixture("search_desc_curl.txt"))
         entries = {e[0]: e for e in sections[0][1]}
         self.assertEqual(entries["curlie"][3], "Power of curl, ease of use of httpie")
         self.assertEqual(entries["curlftpfs"][2], "deprecated")
