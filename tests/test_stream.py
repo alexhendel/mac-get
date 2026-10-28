@@ -79,6 +79,27 @@ class Rules(unittest.TestCase):
                       "Removing: /a... (92 files, 4.5MB)", "Removing: /b... (1.5KB)"])
         self.assertAlmostEqual(op.cleanup_bytes, 4.5e6 + 1.5e3)
 
+    def test_cleanup_command(self):
+        # Regression (#2): `brew cleanup` prints no heading before its Removing lines.
+        op, out = feed(["Removing: /c/Homebrew/gettext--0.26... (10.2MB)",
+                        "Removing: /opt/homebrew/Cellar/x/1.0... (1,707 files, 34.6MB)",
+                        "==> This operation has freed approximately 44.8MB of disk space."],
+                       args=("cleanup",))
+        self.assertEqual(op.cleanup_count, 2)
+        self.assertIn("✓ Cleaned up 2 old files", out)
+        self.assertIn("44.8MB freed", out)
+        self.assertNotIn("Removing:", out)
+
+    def test_cleanup_dry_run(self):
+        op, out = feed(["Would remove: /c/Homebrew/lpeg--1.1.0_2 (96.2KB)",
+                        "Would remove: /c/Homebrew/usage--7.1.1 (4.4MB)",
+                        "==> This operation would free approximately 4.5MB of disk space."],
+                       args=("cleanup", "--dry-run"))
+        self.assertEqual(op.cleanup_count, 2)
+        self.assertIn("✓ Would clean up 2 old files", out)
+        self.assertIn("4.5MB would be freed", out)
+        self.assertNotIn("Would remove:", out)
+
     def test_upgrade_table(self):
         _, out = feed(["==> Upgrading 2 outdated packages:",
                        "curl  8.23.0 -> 8.24.0  (5.2MB)",

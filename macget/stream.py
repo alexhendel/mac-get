@@ -53,6 +53,7 @@ class Operation(UI):
         self.installed, self.removed = [], []
         self.cleanup_count = 0
         self.cleanup_bytes = 0.0
+        self.cleanup_dry = False     # "Would remove:" lines from cleanup --dry-run
         self.pending_upgrade = None
 
     # sections ---------------------------------------------------------------
