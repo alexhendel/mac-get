@@ -10,9 +10,7 @@ from unittest import mock
 
 from macget import stream
 
-from .helpers import FIXTURES, SnapshotMixin, captured, fixture
-
-FAKE_BREW = os.path.join(os.path.dirname(os.path.realpath(__file__)), "fake_brew.py")
+from .helpers import FAKE_BREW, FIXTURES, SnapshotMixin, captured, fixture
 
 
 def feed(lines, args=("install", "wget")):

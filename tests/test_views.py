@@ -1,11 +1,15 @@
 """search, info and list: parsing brew's output and rendering it."""
+import os
+import tempfile
+import threading
 import unittest
 from unittest import mock
 
+from macget import brew
 from macget.commands import info, search
 from macget.commands import list as list_view
 
-from .helpers import QuietUI, SnapshotMixin, captured, fixture
+from .helpers import FAKE_BREW, QuietUI, SnapshotMixin, captured, fixture
 
 
 def render_view(view, args, text, patch="capture_on_pty", code=0):
@@ -118,6 +122,24 @@ class List(SnapshotMixin, unittest.TestCase):
         self.assertRegex(out, r"curl .*keg-only")
         self.assertIn("Example App · Made-up outdated cask", out)
         self.assertNotIn("example-tool · Made-up", out)  # display name equal to token is not repeated
+
+    def test_capture_output_drains_large_output(self):
+        # brew's JSON for `list` is often bigger than a pipe buffer (~64KB); reading
+        # it any way but concurrently deadlocks (#15).
+        with tempfile.TemporaryDirectory() as tmp:
+            big = os.path.join(tmp, "big.txt")
+            with open(big, "w") as f:
+                f.write(("x" * 99 + "\n") * 10000)  # 1MB
+            result = []
+            with mock.patch.object(brew, "BREW", FAKE_BREW), \
+                    mock.patch.dict(os.environ, FAKE_BREW_OUTPUT=big):
+                t = threading.Thread(target=lambda: result.append(
+                    brew.capture_output(QuietUI(), [], "")), daemon=True)
+                t.start()
+                t.join(15)
+        self.assertFalse(t.is_alive(), "capture_output hung on a full pipe")
+        code, out, _ = result[0]
+        self.assertEqual((code, len(out)), (0, 1000000))
 
     def test_filter(self):
         _, out = self.render(["list", "--cask"])
