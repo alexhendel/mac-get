@@ -36,7 +36,10 @@ PIPED = {
 
 
 class QuietUI:
-    """Stands in for macget.ui.UI: capture_on_pty only needs these."""
+    """Stands in for macget.ui.UI: capture_on_pty only needs these.
+
+    Not imported from tests.helpers: importing tests sets COLUMNS, which would
+    then reach the brew runs that capture the fixtures."""
 
     def __getattr__(self, name):
         return lambda *a, **k: None
@@ -44,14 +47,13 @@ class QuietUI:
 
 def main():
     os.makedirs(FIXTURES, exist_ok=True)
-    env = dict(brew_env(), HOMEBREW_NO_AUTO_UPDATE="1")
-    os.environ.update(HOMEBREW_NO_AUTO_UPDATE="1")
+    os.environ["HOMEBREW_NO_AUTO_UPDATE"] = "1"
     for name, args in PTY.items():
         _, text = capture_on_pty(QuietUI(), args, "")
         write(name, text)
     for name, args in PIPED.items():
         out = subprocess.run([BREW, *args], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                             env=env, text=True).stdout
+                             env=brew_env(), text=True).stdout
         write(name, out)
 
 

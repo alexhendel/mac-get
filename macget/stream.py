@@ -27,7 +27,6 @@ COMMANDS = set().union(*(getattr(r, "COMMANDS", ()) for r in RULES))
 
 NOISE = (
     "Disable this behaviour by setting",
-    "Hide these hints with",
     "Hide these hints",
     "You have ",
     "Bottle Manifest",
