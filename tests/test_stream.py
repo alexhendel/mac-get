@@ -109,6 +109,20 @@ class Rules(unittest.TestCase):
         self.assertIn("4.5MB would be freed", out)
         self.assertNotIn("Would remove:", out)
 
+    def test_caveats_summary_one_box_per_package(self):
+        # Regression (#13): with 2+ packages brew repeats all caveats at the end,
+        # one `==> <name>` heading each, after a bare `==> Caveats`.
+        _, out = feed(["==> Caveats",
+                       "==> curl",
+                       "curl is keg-only, which means it was not symlinked into /opt/homebrew,",
+                       "==> postgresql@17",
+                       "To start postgresql@17 now and restart at login:",
+                       "  brew services start postgresql@17"], args=("upgrade",))
+        self.assertIn("╭─ Caveats · curl", out)
+        self.assertIn("│  curl is keg-only", out)
+        self.assertIn("╭─ Caveats · postgresql@17", out)
+        self.assertIn("│    brew services start postgresql@17", out)
+
     def test_upgrade_table(self):
         _, out = feed(["==> Upgrading 2 outdated packages:",
                        "curl  8.23.0 -> 8.24.0  (5.2MB)",
