@@ -1,5 +1,10 @@
 """The live renderer: line rules, section handling and the process loop."""
 import os
+import signal
+import subprocess
+import sys
+import tempfile
+import time
 import unittest
 from unittest import mock
 
@@ -131,6 +136,24 @@ class ProcessLoop(unittest.TestCase):
         code, out = self.run_fake("fetch_figlet.txt", partial="Proceed? [y/N] ")
         self.assertEqual(code, 0)
         self.assertIn("Proceed? [y/N] ", out)
+
+    def test_ctrl_c_reaches_brew_once(self):
+        # Regression (#1): brew shares our process group, so the terminal already
+        # interrupts it; a second SIGINT from us could abort brew's own cleanup.
+        with tempfile.TemporaryDirectory() as tmp:
+            siglog = os.path.join(tmp, "sigint.log")
+            env = dict(os.environ, FAKE_BREW_OUTPUT=os.path.join(FIXTURES, "fetch_figlet.txt"),
+                       FAKE_BREW_SIGLOG=siglog)
+            code = ("import sys; from macget import stream; stream.BREW = sys.argv[1]; "
+                    "sys.exit(stream.run(['install', 'figlet']))")
+            proc = subprocess.Popen([sys.executable, "-c", code, FAKE_BREW], env=env,
+                                    cwd=os.path.dirname(os.path.dirname(FAKE_BREW)),
+                                    stdout=subprocess.DEVNULL, start_new_session=True)
+            time.sleep(1)  # let mac-get start brew and render its output
+            os.killpg(proc.pid, signal.SIGINT)  # what the terminal does on Ctrl-C
+            self.assertEqual(proc.wait(timeout=10), 130)
+            with open(siglog) as f:
+                self.assertEqual(f.read().count("SIGINT"), 1)
 
 
 if __name__ == "__main__":
